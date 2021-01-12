@@ -5,6 +5,7 @@
     "Tags": ["elemental-mode"],
     "Version": "0.0",
     "HasVeniceEXT": true,
+    "HasWebUI": true,
     "Dependencies": {
         "veniceext": "^1.0.0",
         "elemental-fight": "^0.1"

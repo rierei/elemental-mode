@@ -28,6 +28,8 @@ function ElementalMode:RegisterVars()
 
     self.m_sequentialCounter = 1
 
+    self.m_playerElements = {}
+
     self.m_getElementFunctions = {
         [1] = self.GetElementClass,
         [2] = self.GetElementSquad,
@@ -39,8 +41,17 @@ function ElementalMode:RegisterVars()
 end
 
 function ElementalMode:RegisterEvents()
-    Events:Subscribe('Player:Respawn', function (p_player)
+    Events:Subscribe('Player:Respawn', function(p_player)
         self:_PlayerRespawn(p_player)
+    end)
+
+    NetEvents:Subscribe('ElementalMode:Secondary', function(p_player, p_element)
+        if self.m_verbose >= 1 then
+            print('NetEvent ElementalMode:Secondary')
+            print(p_element)
+        end
+
+        self.m_playerElements[p_player.guid:ToString('D')] = p_element
     end)
 end
 
@@ -48,12 +59,18 @@ end
 function ElementalMode:_PlayerRespawn(p_player)
     local s_element = self:GetElement(p_player)
 
+    local s_secondary = self.m_playerElements[p_player.guid:ToString('D')]
+    if self.m_playerElements[p_player.guid:ToString('D')] == nil then
+        s_secondary = 'neutral'
+    end
+
     if self.m_verbose >= 1 then
         print('Event Player:Respawn')
         print(s_element)
+        print(s_secondary)
     end
 
-    Events:Dispatch('ElementalFight:Customize', p_player.guid, s_element, 'water')
+    Events:Dispatch('ElementalFight:Customize', p_player.guid, s_element, s_secondary)
 end
 
 function ElementalMode:GetElement(p_player)
@@ -66,7 +83,7 @@ end
 -- getting class element
 function ElementalMode:GetElementClass(p_player)
     local s_customization = VeniceSoldierCustomizationAsset(p_player.customization)
-    _, _, s_kitName = s_customization.name:match('([^,]+)/([^,]+)/([^,]+)')
+    local _, _, s_kitName = s_customization.name:match('([^,]+)/([^,]+)/([^,]+)')
     s_kitName = s_kitName:sub(3)
 
     local s_element = self.m_classElements[s_kitName]
