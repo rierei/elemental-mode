@@ -12,6 +12,10 @@ function ElementalMode:RegisterVars()
     -- 4 = random
     self.m_mode = 1
 
+    -- 1 = primary
+    -- 2 = secondary
+    self.m_selection = 2
+
     self.m_elementNames = {
         'neutral',
         'water',
@@ -62,6 +66,13 @@ function ElementalMode:_PlayerRespawn(p_player)
     local s_secondary = self.m_playerElements[p_player.guid:ToString('D')]
     if self.m_playerElements[p_player.guid:ToString('D')] == nil then
         s_secondary = 'neutral'
+    end
+
+    if self.m_selection == 1 then
+        local s_primary = s_element
+
+        s_element = s_secondary
+        s_secondary = s_primary
     end
 
     if self.m_verbose >= 1 then
