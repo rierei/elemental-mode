@@ -6,18 +6,12 @@ function ElementalMode:__init()
 end
 
 function ElementalMode:RegisterVars()
-    self.m_selectedElement = 'neutral'
-
     self.m_verbose = 1 -- prints debug information
 
     WebUI:Init()
 end
 
 function ElementalMode:RegisterEvents()
-    Events:Subscribe('Level:Destroy', function()
-        self.m_selectedElement = nil
-    end)
-
     Events:Subscribe('Player:Respawn', function(p_player)
         WebUI:ExecuteJS('showElementSelection();')
     end)
@@ -28,11 +22,7 @@ function ElementalMode:RegisterEvents()
             print(p_element)
         end
 
-        if p_element ~= self.m_selectedElement then
-            self.m_selectedElement = p_element
-
-            NetEvents:Send('ElementalMode:Secondary', p_element)
-        end
+        NetEvents:Send('ElementalMode:Secondary', p_element)
     end)
 end
 

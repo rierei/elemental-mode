@@ -32,8 +32,6 @@ function ElementalMode:RegisterVars()
 
     self.m_sequentialCounter = 1
 
-    self.m_playerElements = {}
-
     self.m_getElementFunctions = {
         [1] = self.GetElementClass,
         [2] = self.GetElementSquad,
@@ -45,38 +43,28 @@ function ElementalMode:RegisterVars()
 end
 
 function ElementalMode:RegisterEvents()
-    Events:Subscribe('Player:Respawn', function(p_player)
-        self:_PlayerRespawn(p_player)
-    end)
-
     NetEvents:Subscribe('ElementalMode:Secondary', function(p_player, p_element)
         if self.m_verbose >= 1 then
             print('NetEvent ElementalMode:Secondary')
             print(p_element)
         end
 
-        self.m_playerElements[p_player.guid:ToString('D')] = p_element
+        self:Customize(p_player, p_element)
     end)
 end
 
 -- customising player on respawn
-function ElementalMode:_PlayerRespawn(p_player)
+function ElementalMode:Customize(p_player, p_secondary)
     local s_element = self:GetElement(p_player)
-
-    local s_secondary = self.m_playerElements[p_player.guid:ToString('D')]
-    if self.m_playerElements[p_player.guid:ToString('D')] == nil then
-        s_secondary = 'neutral'
-    end
+    local s_secondary = p_secondary
 
     if self.m_selection == 1 then
-        local s_primary = s_element
-
-        s_element = s_secondary
-        s_secondary = s_primary
+        s_secondary = s_element
+        s_element = p_secondary
     end
 
     if self.m_verbose >= 1 then
-        print('Event Player:Respawn')
+        print('Elemental:Customize')
         print(s_element)
         print(s_secondary)
     end
