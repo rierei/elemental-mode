@@ -4,9 +4,10 @@
 -- 4 = random
 local mode = 1
 
--- 1 = primary
--- 2 = secondary
-local selection = 2
+-- 1 = none
+-- 2 = primary
+-- 3 = secondary
+local selection = 3
 
 local elements = {
     'neutral',

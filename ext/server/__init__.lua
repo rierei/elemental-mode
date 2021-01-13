@@ -21,14 +21,20 @@ function ElementalMode:RegisterVars()
 end
 
 function ElementalMode:RegisterEvents()
-    NetEvents:Subscribe('ElementalMode:Secondary', function(p_player, p_element)
-        if self.m_verbose >= 1 then
-            print('NetEvent ElementalMode:Secondary')
-            print(p_element)
-        end
+    if ModeConfig.selection == 1 then
+        Events:Subscribe('Player:Respawn', function(p_player)
+            self:Customize(p_player)
+        end)
+    else
+        NetEvents:Subscribe('ElementalMode:Secondary', function(p_player, p_element)
+            if self.m_verbose >= 1 then
+                print('NetEvent ElementalMode:Secondary')
+                print(p_element)
+            end
 
-        self:Customize(p_player, p_element)
-    end)
+            self:Customize(p_player, p_element)
+        end)
+    end
 end
 
 -- customising player on respawn
@@ -37,6 +43,8 @@ function ElementalMode:Customize(p_player, p_secondary)
     local s_secondary = p_secondary
 
     if ModeConfig.selection == 1 then
+        s_secondary = s_element
+    elseif ModeConfig.selection == 2 then
         s_secondary = s_element
         s_element = p_secondary
     end

@@ -168,6 +168,10 @@
         })
 
         document.onkeydown = (event) => {
+            if (!showing) {
+                return
+            }
+
             showing = false
 
             let isHidden = document.getElementById('overlay').classList.contains('hidden')
@@ -181,6 +185,10 @@
         }
 
         function showElementSelection() {
+            if (showing) {
+                return
+            }
+
             showing = true
 
             let isHidden = document.getElementById('overlay').classList.contains('hidden')

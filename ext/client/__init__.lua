@@ -1,5 +1,7 @@
 local ElementalMode = class('ElementalMode')
 
+local ModeConfig = require('__shared/mode-config')
+
 function ElementalMode:__init()
     self:RegisterVars()
     self:RegisterEvents()
@@ -26,4 +28,6 @@ function ElementalMode:RegisterEvents()
     end)
 end
 
-g_elementalMode = ElementalMode()
+if ModeConfig.selection ~= 1 then
+    g_elementalMode = ElementalMode()
+end
