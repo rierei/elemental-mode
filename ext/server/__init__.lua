@@ -8,7 +8,7 @@ function ElementalMode:__init()
 end
 
 function ElementalMode:RegisterVars()
-    self.m_sequentialCounter = 1
+    self.m_sequentialCounter = {}
 
     self.m_getElementFunctions = {
         [1] = self.GetElementClass,
@@ -21,6 +21,10 @@ function ElementalMode:RegisterVars()
 end
 
 function ElementalMode:RegisterEvents()
+    Events:Subscribe('Level:Destroy', function(p_player)
+        self.m_sequentialCounter = {}
+    end)
+
     if ModeConfig.selection == 1 then
         Events:Subscribe('Player:Respawn', function(p_player)
             self:Customize(p_player)
@@ -73,6 +77,11 @@ function ElementalMode:GetElementClass(p_player)
 
     local s_element = ModeConfig.classes[s_kitName]
 
+    if self.m_verbose >= 1 then
+        print('GetElement:Class')
+        print(s_kitName)
+    end
+
     return s_element
 end
 
@@ -83,13 +92,31 @@ function ElementalMode:GetElementSquad(p_player)
     local s_index = s_squad % s_count + 1
     local s_element = ModeConfig.elements[s_index]
 
+    if self.m_verbose >= 1 then
+        print('GetElement:Squad')
+        print(s_squad)
+    end
+
     return s_element
 end
 
 -- getting sequential element
-function ElementalMode:GetElementSequential()
-    local s_element = ModeConfig.elements[self.m_sequentialCounter]
-    self.m_sequentialCounter = self.m_sequentialCounter % #ModeConfig.elements + 1
+function ElementalMode:GetElementSequential(p_player)
+    local s_counter = self.m_sequentialCounter[p_player.guid:ToString('D')]
+    if s_counter == nil then
+        s_counter = 0
+    end
+
+    local s_count = #ModeConfig.elements
+    local s_sequential = s_counter % s_count + 1
+    local s_element = ModeConfig.elements[s_sequential]
+
+    self.m_sequentialCounter[p_player.guid:ToString('D')] = s_counter + 1
+
+    if self.m_verbose >= 1 then
+        print('GetElement:Sequential')
+        print(s_sequential)
+    end
 
     return s_element
 end
@@ -99,6 +126,11 @@ function ElementalMode:GetElementRandom()
     local s_count = #ModeConfig.elements
     local s_random = MathUtils:GetRandomInt(1, s_count)
     local s_element = ModeConfig.elements[s_random]
+
+    if self.m_verbose >= 1 then
+        print('GetElement:Random')
+        print(s_random)
+    end
 
     return s_element
 end
