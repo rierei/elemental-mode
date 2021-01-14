@@ -27,6 +27,10 @@ function ElementalMode:RegisterEvents()
 
     if ModeConfig.selection == 1 then
         Events:Subscribe('Player:Respawn', function(p_player)
+            if p_player.soldier.isManDown then
+                return
+            end
+
             self:Customize(p_player)
         end)
     else
