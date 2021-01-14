@@ -11,6 +11,13 @@ function ElementalMode:RegisterVars()
     self.m_verbose = 1 -- prints debug information
 
     WebUI:Init()
+
+    local mode = 'Secondary'
+    if ModeConfig.selection == 2 then
+        mode = "Primary"
+    end
+
+    WebUI:ExecuteJS('setElementMode(\'' .. mode .. '\');')
 end
 
 function ElementalMode:RegisterEvents()
@@ -22,17 +29,17 @@ function ElementalMode:RegisterEvents()
         WebUI:ExecuteJS('showElementSelection();')
     end)
 
-    Events:Subscribe('ElementalMode:Select', function(p_element)
+    Events:Subscribe('Client:Select', function(p_element)
         if PlayerManager:GetLocalPlayer().soldier.isDead then
             return
         end
 
         if self.m_verbose >= 1 then
-            print('ElementalMode:Select')
+            print('Client:Select')
             print(p_element)
         end
 
-        NetEvents:Send('ElementalMode:Secondary', p_element)
+        NetEvents:Send('ElementalMode:Select', p_element)
     end)
 end
 

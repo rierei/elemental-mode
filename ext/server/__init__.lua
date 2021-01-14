@@ -49,9 +49,9 @@ function ElementalMode:RegisterEvents()
             self:Customize(p_player)
         end)
     else
-        NetEvents:Subscribe('ElementalMode:Secondary', function(p_player, p_element)
+        NetEvents:Subscribe('ElementalMode:Select', function(p_player, p_element)
             if self.m_verbose >= 1 then
-                print('NetEvent ElementalMode:Secondary')
+                print('NetEvent ElementalMode:Select')
                 print(p_element)
             end
 

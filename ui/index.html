@@ -111,7 +111,7 @@
 <body>
     <div id="overlay" class="hidden">
         <div class="title">
-            <span>Secondary</span>
+            <span id="mode"></span>
             <span class="sub">Element</span>
         </div>
         <div class="elements">
@@ -181,7 +181,7 @@
 
             WebUI.Call('DisableMouse')
             WebUI.Call('DisableKeyboard')
-            WebUI.Call('DispatchEvent', 'ElementalMode:Select', selected)
+            WebUI.Call('DispatchEvent', 'Client:Select', selected)
         }
 
         function showElementSelection() {
@@ -198,6 +198,12 @@
 
             WebUI.Call('EnableMouse')
             WebUI.Call('EnableKeyboard')
+        }
+
+        function setElementMode(mode) {
+            let el = document.getElementById('mode')
+
+            el.textContent = mode
         }
     </script>
 </body>
