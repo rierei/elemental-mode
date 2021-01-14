@@ -21,6 +21,10 @@ function ElementalMode:RegisterVars()
 end
 
 function ElementalMode:RegisterEvents()
+    Events:Subscribe('Level:Destroy', function()
+        WebUI:ExecuteJS('hideElementSelection();')
+    end)
+
     Events:Subscribe('Player:Respawn', function(p_player)
         if p_player ~= PlayerManager:GetLocalPlayer() or p_player.soldier.isManDown then
             return

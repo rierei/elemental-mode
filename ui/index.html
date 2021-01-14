@@ -168,6 +168,10 @@
         })
 
         document.onkeydown = (event) => {
+            hideElementSelection()
+        }
+
+        function hideElementSelection() {
             if (!showing) {
                 return
             }
@@ -179,8 +183,8 @@
                 document.getElementById('overlay').classList.toggle('hidden')
             }
 
-            WebUI.Call('DisableMouse')
-            WebUI.Call('DisableKeyboard')
+            WebUI.Call('ResetMouse')
+            WebUI.Call('ResetKeyboard')
             WebUI.Call('DispatchEvent', 'Client:Select', selected)
         }
 
