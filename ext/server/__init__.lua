@@ -8,6 +8,8 @@ function ElementalMode:__init()
 end
 
 function ElementalMode:RegisterVars()
+    self.m_squadMode = false
+
     self.m_sequentialCounter = {}
 
     self.m_getElementFunctions = {
@@ -21,6 +23,19 @@ function ElementalMode:RegisterVars()
 end
 
 function ElementalMode:RegisterEvents()
+    Events:Subscribe('Level:Loaded', function(_, p_mode)
+        if
+            p_mode == 'SquadRush0' or
+            p_mode == 'SquadDeathMatch0'
+        then
+            self.m_squadMode = true
+        else
+            self.m_squadMode = false
+        end
+
+        self.m_currentMode = p_mode
+    end)
+
     Events:Subscribe('Level:Destroy', function(p_player)
         self.m_sequentialCounter = {}
     end)
@@ -93,6 +108,11 @@ end
 function ElementalMode:GetElementSquad(p_player)
     local s_count = #ModeConfig.elements
     local s_squad = p_player.squadId
+
+    if self.m_squadMode then
+        s_squad = p_player.teamId
+    end
+
     local s_index = s_squad % s_count + 1
     local s_element = ModeConfig.elements[s_index]
 
