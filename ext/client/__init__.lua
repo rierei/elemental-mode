@@ -8,7 +8,7 @@ function ElementalMode:__init()
 end
 
 function ElementalMode:RegisterVars()
-    self.m_verbose = 1 -- prints debug information
+    self.m_verbose = 0 -- prints debug information
 
     WebUI:Init()
 
