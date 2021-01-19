@@ -98,6 +98,10 @@ function ElementalMode:GetElementClass(p_player)
         s_kitName = s_kitName:sub(0, -5)
     end
 
+    if string.ends(s_kitName, 'GM') then
+        s_kitName = s_kitName:sub(0, -4)
+    end
+
     local s_element = ModeConfig.classes[s_kitName]
 
     if self.m_verbose >= 1 then
