@@ -94,6 +94,10 @@ function ElementalMode:GetElementClass(p_player)
     local _, _, s_kitName = s_customization.name:match('([^,]+)/([^,]+)/([^,]+)')
     s_kitName = s_kitName:sub(3)
 
+    if string.ends(s_kitName, 'XP4') then
+        s_kitName = s_kitName:sub(0, -5)
+    end
+
     local s_element = ModeConfig.classes[s_kitName]
 
     if self.m_verbose >= 1 then
