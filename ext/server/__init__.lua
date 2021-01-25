@@ -40,6 +40,19 @@ function ElementalMode:RegisterEvents()
         self.m_sequentialCounter = {}
     end)
 
+    Events:Subscribe('Vehicle:Enter', function(p_vehicle, p_player)
+        if p_player.controlledEntryId ~= 0 then
+            return
+        end
+
+        local s_soldierElement = UnlockAsset(p_player.visualUnlocks[1]).debugUnlockId
+        if s_soldierElement == nil then
+            s_soldierElement = 'neutral'
+        end
+
+        Events:Dispatch('ElementalFight:CustomizeVehicle', p_vehicle, s_soldierElement)
+    end)
+
     if ModeConfig.selection == 1 then
         Events:Subscribe('Player:Respawn', function(p_player)
             if p_player.soldier.isManDown then
@@ -78,7 +91,7 @@ function ElementalMode:Customize(p_player, p_secondary)
         print(s_secondary)
     end
 
-    Events:Dispatch('ElementalFight:Customize', p_player.guid, s_element, s_secondary)
+    Events:Dispatch('ElementalFight:CustomizePlayer', p_player.guid, s_element, s_secondary)
 end
 
 function ElementalMode:GetElement(p_player)
