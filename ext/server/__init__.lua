@@ -92,6 +92,10 @@ function ElementalMode:Customize(p_player, p_secondary)
     end
 
     Events:Dispatch('ElementalFight:CustomizePlayer', p_player.guid, s_element, s_secondary)
+
+    if p_player.attachedControllable ~= nil and p_player.controlledEntryId == 0 then
+        Events:Dispatch('ElementalFight:CustomizeVehicle', p_player.attachedControllable, s_element)
+    end
 end
 
 function ElementalMode:GetElement(p_player)
