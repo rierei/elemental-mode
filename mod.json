@@ -3,11 +3,11 @@
     "Description": "Customize players when spawning",
     "Authors": ["Reirei"],
     "Tags": ["elemental-mode"],
-    "Version": "1.0.1",
+    "Version": "1.1.0",
     "HasVeniceEXT": true,
     "HasWebUI": true,
     "Dependencies": {
         "veniceext": "^1.0.0",
-        "elemental-fight": "^1.0.1"
+        "elemental-fight": "^1.1.0"
     }
 }
